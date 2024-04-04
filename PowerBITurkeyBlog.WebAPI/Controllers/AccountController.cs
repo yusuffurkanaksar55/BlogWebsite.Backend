@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using PowerBITurkeyBlog.Business.Abstract;
 using PowerBITurkeyBlog.Entities.Entities;
@@ -10,11 +11,13 @@ namespace PowerBITurkeyBlog.WebAPI.Controllers
 	{
 		private readonly IAccountService _accountService;
 		private readonly IMapper _mapper;
+		private readonly IValidator<AccountDto> _validator;
 
-		public AccountController(IAccountService accountService, IMapper mapper)
+		public AccountController(IAccountService accountService, IMapper mapper, IValidator<AccountDto> validator)
 		{
 			_accountService = accountService;
 			_mapper = mapper;
+			_validator = validator;
 		}
 
 		[HttpGet]
@@ -35,11 +38,17 @@ namespace PowerBITurkeyBlog.WebAPI.Controllers
 		}
 
 		[HttpPost]
-		public IActionResult Save(AccountDto accountDto)
+		public async Task<IActionResult> Save(AccountDto accountDto)
 		{
-			var checkAddEntityAccount = _accountService.AddEntity(_mapper.Map<Account>(accountDto));
-
 			var account = _mapper.Map<Account>(accountDto);
+			var validationResult = await _validator.ValidateAsync(accountDto);
+
+			if (!validationResult.IsValid)
+			{
+				return BadRequest(validationResult.Errors);
+			}
+
+			var checkAddEntityAccount = _accountService.AddEntity(_mapper.Map<Account>(accountDto));
 			var accountAddDto = _mapper.Map<AccountDto>(account);
 
 			return checkAddEntityAccount.IsSuccess
