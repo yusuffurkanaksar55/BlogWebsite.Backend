@@ -1,6 +1,8 @@
-﻿using PowerBITurkeyBlog.Business.Abstract;
+using System.Reflection;
+using PowerBITurkeyBlog.Business.Abstract;
 using PowerBITurkeyBlog.Business.ValidationRules.FluentValidation;
 using PowerBITurkeyBlog.Core.Aspects.PostSharp;
+using PowerBITurkeyBlog.Core.Entities;
 using PowerBITurkeyBlog.Core.Utilites.Results.Abstract;
 using PowerBITurkeyBlog.Core.Utilites.Results.Concrete;
 using PowerBITurkeyBlog.DataAccess.Abstract;
@@ -86,6 +88,16 @@ namespace PowerBITurkeyBlog.Business.Concrete
 			}
 			_accountDal.Update(entity);
 			return new SuccessResult(true, "Account Updated");
+		}
+
+		public IResult AnyAsync(int id)
+		{
+			if (id == null)
+			{
+				return new ErrorResult(false, "Id Parameter is empty");
+			}
+
+			return new Result(_accountDal.AnyAsync(x => x.AccountId == id).Result, $"{nameof(Account)} Not Found");
 		}
 
 		public IDataResult<List<Account>> GetAccountsByRole(int roleId)
