@@ -2,6 +2,7 @@
 using PowerBITurkeyBlog.Core.Utilites.Results.Abstract;
 using PowerBITurkeyBlog.Core.Utilites.Results.Concrete;
 using PowerBITurkeyBlog.DataAccess.Abstract;
+using PowerBITurkeyBlog.DataAccess.Concrete.EntityFramework;
 using PowerBITurkeyBlog.Entities.Entities;
 
 namespace PowerBITurkeyBlog.Business.Concrete
@@ -87,7 +88,12 @@ namespace PowerBITurkeyBlog.Business.Concrete
 
 		public IResult AnyAsync(int id)
 		{
-			throw new NotImplementedException();
+			if (id == null)
+			{
+				return new ErrorResult(false, "Id Parameter is empty");
+			}
+
+			return new Result(_roleDal.AnyAsync(x => x.RoleId == id).Result, $"{nameof(Role)} Not Found");
 		}
 	}
 }

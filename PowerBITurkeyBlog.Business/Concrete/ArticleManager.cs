@@ -2,6 +2,7 @@
 using PowerBITurkeyBlog.Core.Utilites.Results.Abstract;
 using PowerBITurkeyBlog.Core.Utilites.Results.Concrete;
 using PowerBITurkeyBlog.DataAccess.Abstract;
+using PowerBITurkeyBlog.DataAccess.Concrete.EntityFramework;
 using PowerBITurkeyBlog.Entities.Entities;
 
 namespace PowerBITurkeyBlog.Business.Concrete
@@ -87,7 +88,12 @@ namespace PowerBITurkeyBlog.Business.Concrete
 
 		public IResult AnyAsync(int id)
 		{
-			throw new NotImplementedException();
+			if (id == null)
+			{
+				return new ErrorResult(false, "Id Parameter is empty");
+			}
+
+			return new Result(_articleDal.AnyAsync(x => x.ArticleId == id).Result, $"{nameof(Article)} Not Found");
 		}
 
 		public IDataResult<Article> GetArticleByCommentId(int commentId)
