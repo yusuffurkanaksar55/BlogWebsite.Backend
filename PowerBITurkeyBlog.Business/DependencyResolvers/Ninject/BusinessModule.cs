@@ -18,7 +18,7 @@ namespace PowerBITurkeyBlog.Business.DependencyResolvers.Ninject
 			Bind<IAccountService>().To<AccountManager>().InSingletonScope();
 			Bind<IAccountDal>().To<EfAccountDal>().InSingletonScope();
 			Bind<DbContext>().To<PowerBiTurkeyContext>();
-			Bind<IValidator<AccountDto>>().To<AccountValidator>();
+			Bind<IValidator<AccountDto>>().To<AccountDtoValidator>();
 		}
 	}
 }

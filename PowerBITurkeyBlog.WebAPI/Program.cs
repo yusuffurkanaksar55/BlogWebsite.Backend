@@ -20,7 +20,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 //// Add services to the container.
 builder.Services.AddControllers(options => options.Filters.Add(new ValidateFilter()))
-	.AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<AccountValidator>());
+	.AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<AccountDtoValidator>());
 
 
 builder.Services.Configure<ApiBehaviorOptions>(optinons => { optinons.SuppressModelStateInvalidFilter = true; });
@@ -37,7 +37,7 @@ builder.Services.AddAutoMapper(typeof(MapProfile));
 
 builder.Services.AddScoped<IAccountDal, EfAccountDal>();
 builder.Services.AddScoped<IAccountService, AccountManager>();
-builder.Services.AddScoped<IValidator<AccountDto>, AccountValidator>();
+builder.Services.AddScoped<IValidator<AccountDto>, AccountDtoValidator>();
 
 var app = builder.Build();
 
