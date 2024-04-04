@@ -12,5 +12,6 @@ namespace PowerBITurkeyBlog.Core.Abstract
 		IResult DeleteEntity(int id);
 		IResult DeleteEntity(TEntity entity);
 		IResult Update(TEntity entity);
+		IResult AnyAsync(int id);
 	}
 }

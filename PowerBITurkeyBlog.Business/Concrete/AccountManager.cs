@@ -1,6 +1,8 @@
-﻿using PowerBITurkeyBlog.Business.Abstract;
+﻿using System.Reflection;
+using PowerBITurkeyBlog.Business.Abstract;
 using PowerBITurkeyBlog.Business.ValidationRules.FluentValidation;
 using PowerBITurkeyBlog.Core.Aspects.PostSharp;
+using PowerBITurkeyBlog.Core.Entities;
 using PowerBITurkeyBlog.Core.Utilites.Results.Abstract;
 using PowerBITurkeyBlog.Core.Utilites.Results.Concrete;
 using PowerBITurkeyBlog.DataAccess.Abstract;
@@ -32,7 +34,7 @@ namespace PowerBITurkeyBlog.Business.Concrete
 			var entity = await _accountDal.GetByIdAsync(id);
 			return new SuccessDataResult<Account?>(entity, "Account Founded !");
 		}
-		[FluentValidationAspect(typeof(AccountValidator))]
+		[FluentValidationAspect(typeof(AccountDtoValidator))]
 		public IResult AddEntity(Account entity)
 		{
 			if (entity==null)
@@ -43,7 +45,7 @@ namespace PowerBITurkeyBlog.Business.Concrete
 			_accountDal.AddAsync(entity);
 			return new SuccessResult(true, "Account Added");
 		}
-		[FluentValidationAspect(typeof(AccountValidator))]
+		[FluentValidationAspect(typeof(AccountDtoValidator))]
 		public IResult AddEntityRange(IEnumerable<Account> entities)
 		{
 			if (!entities.Any())
@@ -54,7 +56,7 @@ namespace PowerBITurkeyBlog.Business.Concrete
 
 			return new ErrorResult(false, "Accounts can not be empty");
 		}
-		[FluentValidationAspect(typeof(AccountValidator))]
+		[FluentValidationAspect(typeof(AccountDtoValidator))]
 		public IResult DeleteEntity(int id)
 		{
 			if (id==null)
@@ -66,7 +68,7 @@ namespace PowerBITurkeyBlog.Business.Concrete
 			return new SuccessResult(true, "Account Deleted");
 
 		}
-		[FluentValidationAspect(typeof(AccountValidator))]
+		[FluentValidationAspect(typeof(AccountDtoValidator))]
 		public IResult DeleteEntity(Account entity)
 		{
 			if (entity==null)
@@ -86,6 +88,16 @@ namespace PowerBITurkeyBlog.Business.Concrete
 			}
 			_accountDal.Update(entity);
 			return new SuccessResult(true, "Account Updated");
+		}
+
+		public IResult AnyAsync(int id)
+		{
+			if (id == null)
+			{
+				return new ErrorResult(false, "Id Parameter is empty");
+			}
+
+			return new Result(_accountDal.AnyAsync(x => x.AccountId == id).Result, $"{nameof(Account)} Not Found");
 		}
 
 		public IDataResult<List<Account>> GetAccountsByRole(int roleId)

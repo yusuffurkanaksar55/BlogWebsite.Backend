@@ -84,5 +84,10 @@ namespace PowerBITurkeyBlog.Business.Concrete
 			_topicDal.Update(entity);
 			return new SuccessResult(true, "Topic Updated");
 		}
+
+		public IResult AnyAsync(int id)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

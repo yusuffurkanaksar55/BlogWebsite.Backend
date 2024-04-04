@@ -84,5 +84,10 @@ namespace PowerBITurkeyBlog.Business.Concrete
 			_roleDal.Update(entity);
 			return new SuccessResult(true, "Role Updated");
 		}
+
+		public IResult AnyAsync(int id)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

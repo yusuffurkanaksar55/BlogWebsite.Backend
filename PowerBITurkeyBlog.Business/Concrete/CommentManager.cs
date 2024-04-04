@@ -86,6 +86,11 @@ namespace PowerBITurkeyBlog.Business.Concrete
 			return new SuccessResult(true, "Comment Updated");
 		}
 
+		public IResult AnyAsync(int id)
+		{
+			throw new NotImplementedException();
+		}
+
 		public IDataResult<List<Comment>> GetCommentsByAccountId(int accountId)
 		{
 			if (accountId == null)

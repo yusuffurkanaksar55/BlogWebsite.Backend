@@ -7,13 +7,18 @@ using PowerBITurkeyBlog.Business.Concrete;
 using PowerBITurkeyBlog.DataAccess.Abstract;
 using PostSharp.Extensibility;
 using PowerBITurkeyBlog.Business.Mapping.AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using PowerBITurkeyBlog.WebAPI.Filter;
+using FluentValidation;
+using Microsoft.AspNetCore.Identity;
+using PowerBITurkeyBlog.Entities.OtherEntities;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllersWithViews()
-	.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<AccountValidator>());
+builder.Services.AddControllers(options => options.Filters.Add(new ValidateFilter()))
+	.AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<AccountDtoValidator>());
 
-
+builder.Services.Configure<ApiBehaviorOptions>(optinons => { optinons.SuppressModelStateInvalidFilter = true; });
 
 // Add services to the container.
 
@@ -27,6 +32,7 @@ builder.Services.AddDbContext<PowerBiTurkeyContext>(options =>
 
 builder.Services.AddAutoMapper(typeof(MapProfile));
 
+builder.Services.AddScoped<IValidator<AccountDto>, AccountDtoValidator>();
 builder.Services.AddScoped<IAccountDal, EfAccountDal>();
 builder.Services.AddScoped<IAccountService, AccountManager>();
 
