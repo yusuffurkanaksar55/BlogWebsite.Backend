@@ -7,23 +7,20 @@ using PowerBITurkeyBlog.Business.Concrete;
 using PowerBITurkeyBlog.DataAccess.Abstract;
 using PostSharp.Extensibility;
 using PowerBITurkeyBlog.Business.Mapping.AutoMapper;
-using PowerBITurkeyBlog.WebAPI.Filter;
 using Microsoft.AspNetCore.Mvc;
-using PowerBITurkeyBlog.Core.Abstract;
-using PowerBITurkeyBlog.Core.Concrete.EntityFramework;
+using PowerBITurkeyBlog.WebAPI.Filter;
 using FluentValidation;
-using System;
-using PowerBITurkeyBlog.Entities.Entities;
+using Microsoft.AspNetCore.Identity;
 using PowerBITurkeyBlog.Entities.OtherEntities;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//// Add services to the container.
 builder.Services.AddControllers(options => options.Filters.Add(new ValidateFilter()))
 	.AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<AccountDtoValidator>());
 
-
 builder.Services.Configure<ApiBehaviorOptions>(optinons => { optinons.SuppressModelStateInvalidFilter = true; });
+
+// Add services to the container.
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -35,9 +32,10 @@ builder.Services.AddDbContext<PowerBiTurkeyContext>(options =>
 
 builder.Services.AddAutoMapper(typeof(MapProfile));
 
+builder.Services.AddScoped<IValidator<AccountDto>, AccountDtoValidator>();
 builder.Services.AddScoped<IAccountDal, EfAccountDal>();
 builder.Services.AddScoped<IAccountService, AccountManager>();
-builder.Services.AddScoped<IValidator<AccountDto>, AccountDtoValidator>();
+
 
 var app = builder.Build();
 
