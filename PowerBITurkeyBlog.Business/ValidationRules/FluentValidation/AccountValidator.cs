@@ -1,9 +1,10 @@
 ﻿using FluentValidation;
 using PowerBITurkeyBlog.Entities.Entities;
+using PowerBITurkeyBlog.Entities.OtherEntities;
 
 namespace PowerBITurkeyBlog.Business.ValidationRules.FluentValidation
 {
-	public class AccountValidator : AbstractValidator<Account> 
+	public class AccountValidator : AbstractValidator<AccountDto> 
 	{
 		public AccountValidator()
 		{
