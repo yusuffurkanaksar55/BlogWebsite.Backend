@@ -1,7 +1,8 @@
-﻿using PowerBITurkeyBlog.Business.Abstract;
+using PowerBITurkeyBlog.Business.Abstract;
 using PowerBITurkeyBlog.Core.Utilites.Results.Abstract;
 using PowerBITurkeyBlog.Core.Utilites.Results.Concrete;
 using PowerBITurkeyBlog.DataAccess.Abstract;
+using PowerBITurkeyBlog.DataAccess.Concrete.EntityFramework;
 using PowerBITurkeyBlog.Entities.Entities;
 
 namespace PowerBITurkeyBlog.Business.Concrete
@@ -83,6 +84,16 @@ namespace PowerBITurkeyBlog.Business.Concrete
 			}
 			_topicDal.Update(entity);
 			return new SuccessResult(true, "Topic Updated");
+		}
+
+		public IResult AnyAsync(int id)
+		{
+			if (id == null)
+			{
+				return new ErrorResult(false, "Id Parameter is empty");
+			}
+
+			return new Result(_topicDal.AnyAsync(x => x.TopicId == id).Result, $"{nameof(Topic)} Not Found");
 		}
 	}
 }
