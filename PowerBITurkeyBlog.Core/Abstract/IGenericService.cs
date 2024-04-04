@@ -1,4 +1,4 @@
-﻿using PowerBITurkeyBlog.Core.Utilites.Results.Abstract;
+using PowerBITurkeyBlog.Core.Utilites.Results.Abstract;
 using System.Linq.Expressions;
 
 namespace PowerBITurkeyBlog.Core.Abstract
@@ -12,5 +12,6 @@ namespace PowerBITurkeyBlog.Core.Abstract
 		IResult DeleteEntity(int id);
 		IResult DeleteEntity(TEntity entity);
 		IResult Update(TEntity entity);
+		IResult AnyAsync(int id);
 	}
 }
