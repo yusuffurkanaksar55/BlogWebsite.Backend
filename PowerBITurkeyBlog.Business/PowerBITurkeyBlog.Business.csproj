@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="Ninject" Version="3.3.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PowerBITurkeyBlog.Core\PowerBITurkeyBlog.Core.csproj" />
+    <ProjectReference Include="..\PowerBITurkeyBlog.DataAccess\PowerBITurkeyBlog.DataAccess.csproj" />
+    <ProjectReference Include="..\PowerBITurkeyBlog.Entities\PowerBITurkeyBlog.Entities.csproj" />
+  </ItemGroup>
+
+</Project>
