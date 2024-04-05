@@ -78,13 +78,9 @@ namespace PowerBITurkeyBlog.Business.Concrete
 
 		public IResult Update(Topic entity)
 		{
-			if (entity == null)
-			{
-				return new ErrorResult(false, "Topic not found");
-			}
-			_topicDal.Update(entity);
-			return new SuccessResult(true, "Topic Updated");
+			throw new NotImplementedException();
 		}
+
 
 		public IResult AnyAsync(int id)
 		{
