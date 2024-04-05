@@ -60,7 +60,6 @@ namespace PowerBITurkeyBlog.Business.Concrete
 			{
 				return new ErrorResult(false, "Id parameter not found");
 			}
-
 			var article = _articleDal.Where(x => x.ArticleId == id).SingleOrDefault();
 			_articleDal.Remove(article);
 			return new SuccessResult(true, "Article Deleted");
@@ -78,7 +77,13 @@ namespace PowerBITurkeyBlog.Business.Concrete
 
 		public IResult Update(Article entity)
 		{
-			throw new NotImplementedException();
+			if (entity == null)
+			{
+				return new ErrorResult(false, "Article is empty");
+			}
+
+			_articleDal.Update(entity);
+			return new SuccessResult(true, "Article Updated");
 		}
 
 		public IResult AnyAsync(int id)
