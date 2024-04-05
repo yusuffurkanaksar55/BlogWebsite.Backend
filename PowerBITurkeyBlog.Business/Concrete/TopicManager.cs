@@ -80,11 +80,13 @@ namespace PowerBITurkeyBlog.Business.Concrete
 		{
 			if (entity == null)
 			{
-				return new ErrorResult(false, "Topic not found");
+				return new ErrorResult(false, "Topic is empty");
 			}
+
 			_topicDal.Update(entity);
 			return new SuccessResult(true, "Topic Updated");
 		}
+
 
 		public IResult AnyAsync(int id)
 		{

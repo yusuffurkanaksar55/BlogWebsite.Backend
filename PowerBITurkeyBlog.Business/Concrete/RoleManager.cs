@@ -82,6 +82,7 @@ namespace PowerBITurkeyBlog.Business.Concrete
 			{
 				return new ErrorResult(false, "Role is empty");
 			}
+
 			_roleDal.Update(entity);
 			return new SuccessResult(true, "Role Updated");
 		}

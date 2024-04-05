@@ -82,6 +82,7 @@ namespace PowerBITurkeyBlog.Business.Concrete
 			{
 				return new ErrorResult(false, "Article is empty");
 			}
+
 			_articleDal.Update(entity);
 			return new SuccessResult(true, "Article Updated");
 		}

@@ -81,8 +81,9 @@ namespace PowerBITurkeyBlog.Business.Concrete
 		{
 			if (entity == null)
 			{
-				return new ErrorResult(false, "Comment not found!");
+				return new ErrorResult(false, "Comment is empty");
 			}
+
 			_commentDal.Update(entity);
 			return new SuccessResult(true, "Comment Updated");
 		}
