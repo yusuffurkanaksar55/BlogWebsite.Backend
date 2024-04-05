@@ -78,12 +78,7 @@ namespace PowerBITurkeyBlog.Business.Concrete
 
 		public IResult Update(Role entity)
 		{
-			if (entity == null)
-			{
-				return new ErrorResult(false, "Role is empty");
-			}
-			_roleDal.Update(entity);
-			return new SuccessResult(true, "Role Updated");
+			throw new NotImplementedException();
 		}
 
 		public IResult AnyAsync(int id)
