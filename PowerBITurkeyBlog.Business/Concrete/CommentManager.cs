@@ -79,7 +79,13 @@ namespace PowerBITurkeyBlog.Business.Concrete
 
 		public IResult Update(Comment entity)
 		{
-			throw new NotImplementedException();
+			if (entity == null)
+			{
+				return new ErrorResult(false, "Comment is empty");
+			}
+
+			_commentDal.Update(entity);
+			return new SuccessResult(true, "Comment Updated");
 		}
 
 		public IResult AnyAsync(int id)
