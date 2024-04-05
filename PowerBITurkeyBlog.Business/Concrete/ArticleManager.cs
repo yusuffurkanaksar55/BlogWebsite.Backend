@@ -78,12 +78,7 @@ namespace PowerBITurkeyBlog.Business.Concrete
 
 		public IResult Update(Article entity)
 		{
-			if (entity == null)
-			{
-				return new ErrorResult(false, "Article is empty");
-			}
-			_articleDal.Update(entity);
-			return new SuccessResult(true, "Article Updated");
+			throw new NotImplementedException();
 		}
 
 		public IResult AnyAsync(int id)
