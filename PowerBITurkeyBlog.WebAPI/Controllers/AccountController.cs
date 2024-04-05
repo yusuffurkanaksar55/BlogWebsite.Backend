@@ -14,6 +14,7 @@ namespace PowerBITurkeyBlog.WebAPI.Controllers
 		private readonly IMapper _mapper;
 		private readonly IValidator <AccountDto> _validator;
 
+
 		public AccountController(IAccountService accountService, IMapper mapper, IValidator<AccountDto> validator)
 		{
 			_accountService = accountService;
@@ -49,6 +50,14 @@ namespace PowerBITurkeyBlog.WebAPI.Controllers
 		public async Task<IActionResult> Save(AccountDto accountDto)
 		{
 			var account = _mapper.Map<Account>(accountDto);
+			var validationResult = await _validator.ValidateAsync(accountDto);
+
+			if (!validationResult.IsValid)
+			{
+				return BadRequest(validationResult.Errors);
+			}
+
+			var checkAddEntityAccount = _accountService.AddEntity(_mapper.Map<Account>(accountDto));
 			var accountAddDto = _mapper.Map<AccountDto>(account);
 			ValidationResult result = await _validator.ValidateAsync(accountAddDto);
 
@@ -59,8 +68,6 @@ namespace PowerBITurkeyBlog.WebAPI.Controllers
 						_accountService.AddEntity(account).Message));
 			}
 
-			var checkAddEntityAccount = _accountService.AddEntity(_mapper.Map<Account>(account));
-
 			return checkAddEntityAccount.IsSuccess
 				? CreateActionResult(CustomResponseDto<AccountDto>.SuccessCustomResponseDto(201, accountAddDto))
 				: BadRequest(accountAddDto);
@@ -69,14 +76,32 @@ namespace PowerBITurkeyBlog.WebAPI.Controllers
 		[HttpDelete("{id}")]
 		public IActionResult Delete(int id)
 		{
-			var account = _accountService.GetEntityById(id).Result.Data;
-			var checkDeleteEntity = _accountService.AnyAsync(id).IsSuccess;
-
-			return checkDeleteEntity
+			var account = _accountService.GetEntityById(id).Result;
+			var deleteAccount = _accountService.DeleteEntity(account.Data);
+			return deleteAccount.IsSuccess
 				? CreateActionResult(CustomResponseDto<NoContentDto>.SuccessCustomResponseDto(201))
-				: CreateActionResult(
-					CustomResponseDto<NoContentDto>.FailCustomResponseDto(404, _accountService.AnyAsync(id).Message));
+				: CreateActionResult(CustomResponseDto<NoContentDto>.FailCustomResponseDto(404, deleteAccount.Message));
 
 		}
+
+		[HttpPut]
+		public async Task<IActionResult> Update(AccountDto accountDto)
+		{
+			var accountDtoIsSuccess = _accountService.Update(_mapper.Map<Account>(accountDto));
+
+			var validationResult = await _validator.ValidateAsync(accountDto);
+
+			if (!validationResult.IsValid)
+			{
+				return BadRequest(validationResult.Errors);
+			}
+
+			return accountDtoIsSuccess.IsSuccess
+				? CreateActionResult(CustomResponseDto<AccountDto>.SuccessCustomResponseDto(201))
+				: CreateActionResult(CustomResponseDto<NoContentDto>.FailCustomResponseDto(404,
+					accountDtoIsSuccess.Message));
+
+		}
+
 	}
 }
