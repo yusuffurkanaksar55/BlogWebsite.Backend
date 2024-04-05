@@ -32,6 +32,12 @@ namespace PowerBITurkeyBlog.Business.Concrete
 				return new ErrorDataResults<Account?>("Id Parameter can not found !");
 			}
 			var entity = await _accountDal.GetByIdAsync(id);
+
+			if (entity == null)
+			{
+				return new ErrorDataResults<Account?>("Account is empty");
+			}
+
 			return new SuccessDataResult<Account?>(entity, "Account Founded !");
 		}
 		[FluentValidationAspect(typeof(AccountDtoValidator))]
@@ -86,6 +92,7 @@ namespace PowerBITurkeyBlog.Business.Concrete
 			{
 				return new ErrorResult(false, "Account is empty");
 			}
+
 			_accountDal.Update(entity);
 			return new SuccessResult(true, "Account Updated");
 		}
