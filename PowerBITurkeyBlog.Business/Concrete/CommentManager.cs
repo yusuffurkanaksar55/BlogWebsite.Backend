@@ -79,12 +79,7 @@ namespace PowerBITurkeyBlog.Business.Concrete
 
 		public IResult Update(Comment entity)
 		{
-			if (entity == null)
-			{
-				return new ErrorResult(false, "Comment not found!");
-			}
-			_commentDal.Update(entity);
-			return new SuccessResult(true, "Comment Updated");
+			throw new NotImplementedException();
 		}
 
 		public IResult AnyAsync(int id)
