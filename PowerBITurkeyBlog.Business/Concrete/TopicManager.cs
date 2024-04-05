@@ -78,7 +78,13 @@ namespace PowerBITurkeyBlog.Business.Concrete
 
 		public IResult Update(Topic entity)
 		{
-			throw new NotImplementedException();
+			if (entity == null)
+			{
+				return new ErrorResult(false, "Topic is empty");
+			}
+
+			_topicDal.Update(entity);
+			return new SuccessResult(true, "Topic Updated");
 		}
 
 
